@@ -1,2 +1,12 @@
-# Auto detect text files and perform LF normalization
+# Normalize line endings
 * text=auto
+
+# Treat all JavaScript, CSS, and HTML as text
+*.js text
+*.css text
+*.html text
+
+# Set default diff for binary files
+*.png binary
+*.jpg binary
+
