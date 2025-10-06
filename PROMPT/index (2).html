@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨AI Prompts Marketplace</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial,sans-serif;}
+body{background:#F5F5F5;color:#333;line-height:1.6;transition:0.3s;}
+body.dark{background:#1e1e1e;color:#f5f5f5;}
+a{text-decoration:none;color:#007BFF;}
+body.dark a{color:#4ea1ff;}
+
+/* Header */
+header{
+  position:sticky;top:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 2rem;
+  background:linear-gradient(90deg,#6a11cb,#2575fc);
+  color:white;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,0.2);
+}
+.logo{
+  font-weight:900;font-size:1.8rem;
+  background:linear-gradient(90deg,#ff9a9e,#fad0c4,#a1c4fd,#c2e9fb);
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  animation:gradientText 8s infinite alternate;
+}
+header button{
+  padding:0.6rem 1.2rem;
+  background:linear-gradient(90deg,#ff6a00,#ee0979);
+  color:#fff;font-weight:bold;font-size:0.9rem;
+  border-radius:30px;border:none;cursor:pointer;
+  transition:all 0.3s;
+}
+header button:hover{transform:translateY(-2px) scale(1.05);opacity:0.9;}
+
+/* Hero Section */
+.hero{position:relative;overflow:hidden;padding:3rem 1rem;}
+.hero::before{
+  content:"";position:absolute;top:0;left:0;width:200%;height:200%;
+  background:linear-gradient(45deg,#ff4e50,#f9d423,#24c6dc,#514a9d,#ff6e7f,#bfe9ff);
+  background-size:400% 400%;animation:gradientBG 12s ease infinite;
+  z-index:-1;transform:rotate(-10deg);
+}
+@keyframes gradientBG{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.hero .hero-inner{text-align:center;color:white;max-width:900px;margin:0 auto;animation:fadeSlide 1.5s ease;}
+@keyframes fadeSlide{0%{opacity:0;transform:translateY(40px);}100%{opacity:1;transform:translateY(0);}}
+.hero h1{
+  font-size:3rem;font-weight:900;margin-bottom:1rem;
+  background:linear-gradient(90deg,#ff9a9e,#fad0c4,#a1c4fd,#c2e9fb,#d8b4fe,#c084fc);
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  background-size:300% 300%;animation:gradientText 8s infinite alternate;
+}
+@keyframes gradientText{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.hero p{font-size:1.2rem;max-width:700px;margin:0 auto;color:#fefefe;text-shadow:1px 1px 6px rgba(0,0,0,0.3);}
+@media(max-width:768px){.hero h1{font-size:2rem;}.hero p{font-size:1rem;}}
+
+/* Filters */
+.filters{display:flex;flex-wrap:wrap;gap:1rem;padding:1rem 2rem;justify-content:space-between;align-items:center;}
+.filters input,.filters select{padding:0.5rem;border-radius:6px;border:1px solid #ccc;flex:1;min-width:120px;}
+
+/* Ad Section */
+.ad-section{padding:1rem 2rem;text-align:center;}
+.ad-box{background:#f0f0f0;border:2px dashed #bbb;padding:2rem;border-radius:12px;font-size:1rem;color:#666;}
+body.dark .ad-box{background:#2a2a2a;border-color:#555;color:#aaa;}
+
+/* Section Heading */
+.section-heading{text-align:center;font-size:2rem;margin-top:2rem;color:violet;font-weight:700;}
+
+/* Cards */
+.card{background:#fff;border-radius:15px;padding:1rem;box-shadow:0 8px 20px rgba(0,0,0,0.1);display:flex;flex-direction:column;transition:transform 0.3s,box-shadow 0.3s;}
+body.dark .card{background:#2a2a2a;color:#f5f5f5;}
+.card:hover{transform:translateY(-5px);box-shadow:0 14px 28px rgba(0,0,0,0.25);}
+.card img{aspect-ratio:2/3;object-fit:cover;width:100%;border-radius:12px;margin-bottom:0.5rem;transition:transform 0.3s;}
+.card:hover img{transform:scale(1.05);}
+.card h3{margin:0.5rem 0;font-size:1rem;}
+.card p {
+  flex: 1;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  max-height: 3em; /* ~2 lines height */
+  overflow: hidden;
+  position: relative;
+  transition: max-height 0.5s ease;
+}
+
+.card p.expanded {
+  max-height: 1000px; /* Large value to allow full expansion */
+}
+.card .tags {
+  font-size: 0.9rem;      /* a bit bigger */
+  font-weight: 700;        /* bold */
+  color: #222;             /* darker */
+  background: #f0f0f0;     /* optional tag background */
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+body.dark .card .tags {
+  color: #fff;
+  background: #333;
+}
+
+
+/* Buttons inside cards */
+.copy-btn {
+  margin-top:0.5rem;
+  padding:0.5rem 0.8rem;
+  background:linear-gradient(90deg,#6a11cb,#2575fc);
+  color:#fff;
+  font-weight:bold;
+  border-radius:8px;
+  cursor:pointer;
+  border:none;
+  font-size:0.85rem;
+  transition:0.3s;
+}
+.copy-btn:hover {opacity:0.9; transform:scale(1.05);}
+
+.more-btn {
+  font-size:0.8rem;
+  color:#007BFF;
+  cursor:pointer;
+  margin-top:0.3rem;
+  background:none;
+  border:none;
+  padding:0;
+  text-decoration:underline;
+}
+
+/* Main Grid */
+.prompt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;padding:2rem;}
+@media(max-width:1200px){.prompt-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:1024px){.prompt-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.prompt-grid{grid-template-columns:1fr;}}
+
+/* Footer */
+footer{background:#fff;padding:2rem;margin-top:2rem;color:#333;}
+footer.dark{background:#2a2a2a;color:#f5f5f5;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.5rem;margin-bottom:1.5rem;}
+.footer-grid h4{margin-bottom:0.5rem;}
+.footer-grid a{display:block;margin-bottom:0.3rem;color:#007BFF;}
+.footer-bottom{border-top:1px solid #ccc;padding-top:1rem;font-size:0.85rem;display:flex;flex-wrap:wrap;justify-content:space-between;}
+.footer-legal{margin-top:1rem;text-align:center;font-size:0.8rem;color:#555;}
+
+/* Back to Top Button */
+#backToTop{position:fixed;bottom:20px;right:20px;padding:0.6rem 1rem;background:#4CAF50;color:white;border:none;border-radius:8px;cursor:pointer;display:none;z-index:1000;transition:0.3s;}
+#backToTop:hover{background:#45a049;}
+
+/* ---------- Sign In Modal ---------- */
+.modal {
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:2000;
+}
+.modal-content {
+  background:#fff; padding:2rem; border-radius:12px; width:300px; text-align:center;
+}
+body.dark .modal-content {background:#2a2a2a; color:#fff;}
+.modal-content h2 {margin-bottom:1rem;}
+.modal-content input {
+  width:100%; padding:0.5rem; margin:0.5rem 0;
+  border:1px solid #ccc; border-radius:6px;
+}
+.modal-content button {
+  margin-top:1rem; padding:0.5rem 1rem; border:none; border-radius:6px;
+  background:linear-gradient(90deg,#6a11cb,#2575fc); color:white; font-weight:bold;
+  cursor:pointer; transition:0.3s;
+}
+.modal-content button:hover {opacity:0.9;}
+.close-btn {
+  background:red !important; margin-top:0.5rem;
+}
+</style>
+</head>
+<body class="dark">
+
+<header>
+  <div class="logo">✨ AI Prompts</div>
+  <button id="openSignIn">Sign In</button>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1>✨ 70+ AI Image Prompts to Try in 2025 ✨</h1>
+    <p>Explore anime, wallpapers, realistic art, and divine god prompts. Copy & use them instantly in your AI projects.</p>
+  </div>
+</section>
+
+<!-- Filters -->
+<div class="filters">
+  <input type="text" id="searchInput" placeholder="Search prompts...">
+  <select id="categoryFilter">
+    <option value="">All Categories</option>
+    <option value="anime">Anime</option>
+    <option value="wallpapers">Wallpapers</option>
+    <option value="traditional">Traditional</option>
+    <option value="formal">Formal</option>
+  </select>
+</div>
+
+<!-- Ad Section -->
+<div class="ad-section">
+  <div class="ad-box">
+    [ Your Ad Will Show Here – Google AdSense Code ]
+  </div>
+</div>
+
+<!-- Prompts Section Heading -->
+<h2 class="section-heading">Our AI Prompts Collection</h2>
+
+<!-- Main Grid -->
+<div class="prompt-grid" id="promptGrid"></div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>🔥 Prompt Lab</h4>
+      <a href="#">➡️Unlock pixel-perfect prompts that spark stunning visuals. Built for creators who demand precision and style.</a>
+    </div>
+    <div>
+      <h4>✨ Feature Highlights</h4>
+      <a href="#">🎯 Smart Prompt Editor</a>
+      <a href="#">🖼️ Live Image Previews</a>
+      <a href="#">🧩 Prompt Packs & Collections</a>
+      <a href="#">🔍 Advanced Search & Filters</a>
+      <a href="#">⚡ One-Click Copy & Remix</a>
+    </div>
+    <div>
+      <h4>🗂️ Categories</h4>
+      <a href="#">🔥 Trending Styles</a>
+      <a href="#">🧙 Fantasy & Sci-Fi</a>
+      <a href="#">🧠 Concept Art</a>
+      <a href="#">👗 Fashion & Portraits</a>
+      <a href="#">🛍️ Product & Branding</a>
+    </div>
+    <div>
+      <h4>Get to Know Us</h4>
+      <a href="#">⚫Facebook</a>
+      <a href="https://www.instagram.com/roronoa_zoro_ema?igsh=bDdkcndpdWM3ZXdo==" target="_blank">⚫Instagram</a>
+      <a href="#">⚫YouTube</a>
+    </div>
+    <div>
+      <h4>About Us</h4>
+      <a href="#">🖤Made with love for prompt engineers, visual storytellers, and AI dreamers.</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2025 AI Prompts Marketplace</div>
+    <div><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></div>
+  </div>
+  <div class="footer-legal">
+    All images, prompts, and content are © 2025 AI Prompts Marketplace. Unauthorized reproduction or distribution is prohibited.
+  </div>
+</footer>
+
+<!-- Back to Top Button -->
+<button id="backToTop">↑ Top</button>
+
+<!-- Sign In Modal -->
+<div class="modal" id="signInModal">
+  <div class="modal-content">
+    <h2>Sign In</h2>
+    <input type="text" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button>Submit</button>
+    <button class="close-btn" id="closeSignIn">Close</button>
+  </div>
+</div>
+
+
+<script>
+    // ---- prompts (kept the original detailed ones and the rest) ----
+    const prompts=[
+  {title:"Morning",category:"formal",image:"images/A.png",prompt:"A contemplative Indian man with tousled black hair and a full beard, sitting in a dark brown wicker chair indoors. He’s wearing a white t-shirt with a small blue graphic and loose olive-green pants. His left elbow rests on the armrest, hand supporting his head, gazing thoughtfully into the distance. Sunlight streams through horizontal blinds behind him, casting dramatic striped shadows across his face and body. The background features a beige wall and blurred green foliage outside the window. Shot in ultra-realistic style, warm natural lighting, shallow depth of field, earthy tones, DSLR quality. and do not change my face"},
+  {title:"Cute Girl Laughing",category:"formal",image:"images/B.png",prompt:"A cheerful young Indian woman wearing a black baseball cap and casual black outfit, posing playfully with both hands raised in a fun gesture. She’s smiling brightly, eyes squinted, in an outdoor rustic setting with aged architecture and a canopy overhead. adding contrast and theatrical flair. The lighting is natural daylight, with warm earthy tones and a slightly whimsical mood. Shot in ultra-realistic style, DSLR quality, lifestyle-meets-drama aesthetic."},
+  {title:"Luxury Lifestyle",category:"wallpapers",image:"images/C.png",prompt:"A stylish Indian man with a neatly groomed beard and short hair, wearing a light turquoise short-sleeved shirt, white pants, and white sneakers, standing confidently in front of a sleek private jet on an airport tarmac. He’s holding a drink in one hand and gesturing with the other, smiling slightly. The jet has a modern design with multiple windows and a dark blue stripe along its body. The sky is clear with scattered clouds, and the lighting is bright natural daylight. Shot in ultra-realistic style, DSLR quality, luxury lifestyle aesthetic. and do change face"},
+  {title:"Aesthetic Background",category:"wallpapers",image:"images/D.png",prompt:"A stylish young Indian woman with shoulder-length wavy hair, sitting on the edge of a stone fountain ledge in front of the Trevi Fountain in Rome. She’s wearing a beige sleeveless buttoned top, a long blue denim skirt, and white sneakers. A burgundy woven shoulder bag hangs from her shoulder. She playfully raises her right arm as if tossing a coin into the fountain, with a slight smile. The Trevi Fountain’s grand architecture and turquoise waters serve as the majestic backdrop. Shot in ultra-realistic style, DSLR quality, warm tones, classic tourist shot aesthetic. and do not change face"},
+  {title:"A Man Sitting",category:"wallpapers",image:"images/E.png",prompt:"A stylish young Indian man with curly hair, a short beard, and large round glasses, sitting cross-legged on a wooden bench in a park. He’s wearing a white zip-up jacket, light beige pants, and white sneakers. The background features lush green trees and a metal railing, with soft natural sunlight filtering through the leaves. The mood is relaxed and casual. Shot in ultra-realistic style, DSLR quality, shallow depth of field, soft shadows, warm tones, Instagram aesthetic. and do change face"},
+  {title:"Elegent Pose",category:"wallpapers",image:"images/F.png",prompt:"A relaxed Indian man with curly hair, a short beard, and dark sunglasses, sitting casually on a black folding chair on a red-tiled outdoor patio. He’s wearing a navy blue t-shirt, light green cargo pants, and clean white sneakers. His left leg is crossed over his right knee, and his left arm rests on the chair’s backrest. The background features a red metal railing and lush green foliage, with soft natural daylight casting even shadows. Shot in ultra-realistic style, DSLR quality, warm tones, lifestyle aesthetic. and do change my face please"},
+  {title:"Rainy Day",category:"formal",image:"images/1.png",prompt:"Wearing an oversized black t-shirt, black box pants, snekers.using an umbrella on the sidewalk about to cross the road at a red light, many trees, beside the sidewalk.heavy rain. Ratio 9:16."},
+  {title:"Rain Scene",category:"wallpaper",image:"images/2.webp",prompt:"Cinematic shot of me walking against a rushing cyber city crowd, all others are blurred with motion trails, slow-shutter, i’m in focus, side profile- serious looking at a far distance, it’s raininv and I am soaked. Wearing a long trench coat. Neon cyberpunk tones, 35mm film look, ambient lighting from neon signs ratio: 4:3."},
+  {title:"Black Fragon",category:"anime",image:"images/3.webp",prompt:"ultra realistic vertical format fisheyes selfie of me and my girlfriend with [Black Fragon]. We are all making silly face, exaggerated faces. Set in a small, bright living room with white tones. High camera angle. Extreme fisheyes distortion. Realistic, Cinematic lighting, anime characters integrated with stylized realism."},
+  {title:"A Man Walking",category:"anime",image:"images/4.webp",prompt:"A cinematic double exposure of me in profile, with a post-apocalyptic cityscape inside his silhouette.The inner scene shows the man walking through a destroyed, burning urban street, buildings in ruins, glowing embers and fire, with a dramatic sunset in the background. Moody lighting, warm tones, emotional and introspective mood, high detail, 8K resolutions."},
+  {title:"Strong Man",category:"wallpapers",image:"images/5.webp",prompt:"ultra-realistic cinematic image of a young man (use uploaded face) style the person as a strong, focused boxer wearing a fitted dark athletic t-shirt with fists wrapped in tape. set the subject against a bold red background. use cinematic lighting with deep shadows and strong highlights to emphasize muscle tone and facial expression."},
+  {title:"Anime Characters",category:"anime",image:"images/6.webp",prompt:"Ultra-realistic 9:16 vertical format fisheye selfie of me with [shinchan, Doraemon, Naruto, Nobita, Satoru Gojo, Sung Jin who, Ash from pokimon]. We’re all making silly, exaggerated faces. Set in a small, bright living room with white tones. High  camera angle. Extreme fisheye distortion. Realistic, cinematic lighting, anime characters integrated with stylized realism."},
+  {title:"Angle",category:"anime",image:"images/10.jpg",prompt:"A young man (face and hair should be 100% based on the attached photo). His expression conveys admiration, focus, and perhaps a touch of reverence. Pose: Shown in profile, looking upward and to the left toward a luminous figure. He extends his left hand, which becomes the apparent source of magic. The pose emphasizes the interaction between him and the magical creature.Environment:A simple bedroom with light-colored walls, a wooden door, and minimal clean-styled furniture.Image Structure and Angle,Framing: Medium-close portrait, vertical orientation, capturing the model from chest up, leaving space above for the magical effect to unfold.Angle: The camera is at or slightly below the model's face level, creating a natural, immersive, and intimate perspective."},
+  {title:"A Guy Leaning On Wall",category:"formal",image:"images/7.jpg",prompt:"A stylish young man with dark, sunglasses, leaning4 casually against a light gray, paneled wall. He is wearing short-sleeved button-up shirt that transitiors from dark blue to light gray in an ombre effect, and dark cargo pants. His hands are in his pockets, and he has a dark watch on his left wrist. The lighting is bright and even, highlighting the textures of his clothing and hair"},
+  {title:"Black & White",category:"wallpaper",image:"images/8.jpg",prompt:"A hyper-realistic and minimalist black-and-white portrait of a man (based on the uploaded reference), partially covering his face with his hand. The expression is intense and mysterious. Dramatic lighting creates strong shadows with Photorealistic cinematic vertical portrait (9:16)."},
+  {title:"Gangster Look",category:"wallpaper",image:"images/9.jpg",prompt:"illustration of a rugged man with medium-length dark wavy hair and a thick beard, wearing a sharp black suit, black shirt, and black tie. He has a serious, intense expression with scratches and bruises on his face, and he is wearing black sunglasses. The lighting is dramatic with bold red and blue neon highlights casting strong shadows, giving the portrait a neo-noir, graphic novel style. The background is completely black, emphasizing the character's powerful and mysterious presence"},
+  {title:"Itachi",category:"anime",image:"images/11.jpg",prompt:"A man sits on a stone throne, posing regally. He's wearing a black Uchiha robe over a black t-shirt and pants. The throne has a worn, mossy texture and is in front of a dark wall with a large red Uchiha symbol. The lighting is dramatic and moody, and the style is a mix of realistic photos and anime art."},
+  {title:"Radhakrishna",category:"traditional",image:"images/12.jpg",prompt:"over her shoulders. She is wearing a translucent, elegant radha ji dress draped over one shoulder, revealing a fitted blouse with simple elegant heavy lehenga. Flowers are tucked as a jewellery. She is looking slightly to her right, with a soft, serene expression. I want same face as I uploaded no alternation 100 percent same. The background is a plain, blackish & bluish-toned wall, illuminated by a warm light source from the right, creating a distinct, soft-edged shadow of krishna ji profile and hair on the wall behind her. The overall mood is retro and artistic. Use the face from the uploaded reference image and preserve the same facial features — do not alter the face."},
+  {title:"90s style",category:"traditional",image:"images/13.jpg",prompt:"Take the face from the attached reference photo exactly 100% the same (do not alter her facial features, keep her identity intact). A vintage Indian woman portrait from the 1970s, styled in traditional Bollywood fashion. She has long, voluminous black hair adorned with two red roses tucked behind her ear. A bold black bindi sits on her forehead, and her large expressive eyes are highlighted with dramatic winged eyeliner. She wears heavy golden jhumka earrings and a delicate gold necklace. Her outfit is a saree in shades of black and purple with floral designs, paired with multiple bangles in gold, black, and purple. The woman’s pose is graceful, with her chin resting gently on her clasped hands, exuding elegance and charm. The background is soft and neutral, enhancing the retro aesthetic and focusing attention on her face and attire. The overall mood is glamorous, classic, and reminiscent of old Bollywood cinema posters."},
+  {title:"Saree",category:"traditional",image:"images/14.jpg",prompt:"A retro, vintage, and grainy photograph of a girl with a romantic, dreamy aesthetic, reminiscent of a 90s Indian movie. The girl is draped in a plain, yellow chiffon saree, wearing small bindi, and jhumke in the ears, with ring and bracelet in hand, and her dark brown, wavy hair is flowing naturally in the wind, with a single, small, delicate pink flower tucked visibly into her curls. She is standing against a solid wall with deep shadows and dramatic contrast. The lighting is warm and infused with golden-hour tones, creating a nostalgic atmosphere. Her expressions are calm, and introspective, yet happy. The image has a slightly textured, minimalist background to keep the focus on her face. Use the face from the uploaded reference image and preserve the same facial features — do not alter the face."},
+  {title:"Aesthetic Pose",category:"traditional",image:"images/15.jpg",prompt:"This is a photo of me. Craft a moody studio portrait of the uploaded person, bathed in golden-orange spotlight that creates a glowing circular halo behind them on the wall. The warm light should sculpt the face and upper body with soft, sunset-like tones, while casting a strong head shadow to the right. Style the person. Her eyes are closed and chin tilted slightly up."},
+  {title:"Girl With Beautiful Flowers",category:"traditional",image:"images/16.jpg",prompt:"Create A soft, sunlit portrait of My self [Uploaded Face] wearing a flowing sheer yellow saree with delicate floral embroidery. She sits gracefully against a plain wall, bathed in warm natural light with a triangular patch of sunlight casting artistic shadows. She holds a vibrant bouquet of sunflowers close to her chest, and a small white flower is tucked behind her ear. Her gentle expression, loose hair strands moving slightly, and the dreamy golden glow create a serene, poetic, and romantic, her face should match 100% with uploaded reference. Use the face from the uploaded reference image and preserve the same facial features — do not alter the face."},
+  {title:"Red saree",category:"traditional",image:"images/171.jpg",prompt:"Convert, 4k HD realistic, A stunning portrait of a young Indian woman (with the same face as the uploaded reference image, preserving 100% facial features without alteration) with long, dark, wavy hair cascading over her shoulders. She is wearing a translucent, elegant red saree draped over one shoulder, revealing a fitted blouse underneath. White flowers are tucked behind her right ear. She is looking slightly to her right, with a soft, serene expression. The background is a plain, warm-toned wall, illuminated by a warm light source from the right, creating a distinct, soft-edged shadow of her profile and hair on the wall behind her. The overall mood is retro and artistic."},
+  {title:"Stylish Guy",category:"wallpapers",image:"images/18.jpg",prompt:"Ultra-realistic cinematic photo using the exact same face from the uploaded reference image (keep 100% identical facial features and hairstyle). A stylish young man with curly hair and a trimmed beard, wearing a fitted black t-shirt, ripped black jeans, and black boots. He is leaning casually against a sleek black vintage muscle car parked on a winding mountain road. The background shows dramatic mountain silhouettes under a warm golden sunset sky. The mood is cinematic, moody, and atmospheric with soft golden-hour lighting. 4K, high detail."},
+  {title:"Handsome Man With Refreshing Drink",category:"formal",image:"images/19.jpg",prompt:"A realistic cinematic photo of the uploaded person sitting at a stylish outdoor café near the beach, palm trees in the background, reflections on large glass windows, relaxed modern vibe. The person is wearing casual stylish clothes (dark sweater or t-shirt, jeans, sunglasses), sitting comfortably on a chair holding a refreshing drink with mint and ice. Natural daylight, aesthetic cine tones, high quality, professional lifestyle photography, beach café ambiance. Use the face from the uploaded reference image and preserve the same facial features — do not alter the face."},
+  {title:"Beautie",category:"formal",image:"images/20.jpg",prompt:"A dramatic cinematic still, looking up at a massive, photorealistic mural of a woman's face painted on a weathered concrete wall. *Maintain the likeness of the woman's face from the reference image, rendered in a gritty, ghost-like, highly detailed sketch style.* The scene is set in a dark, abandoned industrial factory with large pipes and machinery. Dramatic low-key lighting, shafts of light cutting through the darkness, cinematic atmosphere, dark tones, moody, melancholic. Shot from a low angle. **Ultra detailed, 8K resolution.**"},
+  {title:"A Guy Sitting On A Bench",category:"traditional",image:"images/201.jpg",prompt:"Create a retro, vintage-inspired image - grainy yet bright - based on the reference picture. The boy should be wearing a white shirt with small brown flower prints, paired with plated beige pants styled in a Pinterest-inspired aesthetic. The vibe must capture the essence of a 90s movie dark-brown-haired baddie, hair waving by a windy, romantic atmosphere. He is sitting on a wooden bench as a few leaves blow in the air, while dramatic contrasts add mystery and artistry to the scene, creating a moody yet enchanting. Use the face from the uploaded reference image and preserve the same facial features — do not alter the face."},
+  {title:"A Man Sitting On A Chair",category:"formal",image:"images/21.jpg",prompt:"Use the attached image of the person as the sole facial and hairstyle reference, keeping the exact same face, hairstyle, and overall appearance as in the reference image with a realistic and natural look. Create a high-fashion lifestyle editorial portrait of a 20-year-old Indian man, elegant and sophisticated, sitting on a wooden chair in a modern cafe. He holds a white coffee cup in both hands in a refined gesture, exuding confidence and charm. He is wearing a structured white shirt with a white blazer casually draped over the shoulders, paired with wide-cut jeans. Accessories include rectangular sunglasses with gold details, a luxury gold watch, and a bold statement ring. His skin should appear natural, youthful, and glowing with soft highlights. The background is an elegant cafe environment, softly blurred to emphasize the subject. The lighting is soft, warm, and natural, illuminating the face and reflecting off the gold accessories to create a luxurious glow. His body posture is slightly leaning forward, evoking sophistication, elegance, and presence."},
+  {title:"Normal Pose",category:"wallpapers",image:"images/23.jpg",prompt:"A realistic cinematic photo of the uploaded person sitting at a stylish outdoor café near the beach, palm trees in the background, reflections on large glass windows, relaxed modern vibe. The person is wearing casual stylish clothes (dark sweater or t-shirt, jeans, sunglasses), sitting comfortably on a chair holding a refreshing drink with mint and ice. Natural daylight, aesthetic cine tones, high quality, professional lifestyle photography, beach café ambiance. Use the face from the uploaded reference image and preserve the same facial features — do not alter the face."},
+  {title:"Mountain Road",category:"formal",image:"images/24.jpg",prompt:"Ultra-realistic cinematic photo using the exact same face from the uploaded reference image (keep 100% identical facial features and hairstyle). A stylish young man with curly hair and a trimmed beard, wearing a fitted black t-shirt, ripped black jeans, and black boots. He is leaning casually against a sleek black vintage muscle car parked on a winding mountain road. The background shows dramatic mountain silhouettes under a warm golden sunset sky. The mood is cinematic, moody, and atmospheric with soft golden-hour lighting. 4K, high detail."},
+  {title:"Casual look",category:"formal",image:"images/25.jpg",prompt:"Cinematic editorial photograph of person holding up a burning newspaper, flames curling dramatically around paper edges. Newspaper headline reads bold text with modern typography, editorial style layout, featuring black and white images and quotes. Subject is dressed in sharp black suit. Dark background enhances fires glow, creating contrast with warm highlights on subjects clothing. Use the reference image for the face to maintain likeness. Ultra-detailed, high-contrast lighting, IMG_2034.CR2"},
+  {title:"Black Suit",category:"wallpapers",image:"images/26.jpg",prompt:"Full-body portrait of a young man standing in a sleek, modern elevator.He is wearing an oversized black suit with wide lapels, no visible shirt underneath, and holding a takeaway coffee cup in one hand. He has medium-length wavy hair and is wearing large black sunglasses. keep the face unchanged, The elevator interior has brushed metal walls, soft overhead lighting, and a minimalistic, urban vibe. The mood should be cinematic, high-fashion editorial, and slightly moody. Capture a clean, polished look with subtle shadows and professional-grade lighting, emphasizing luxury and confidence"},
+  {title:"Black & White",category:"wallpapers",image:"images/27.jpg",prompt:"Hyper-realistic cinematic studio portrait, 4K, black and white, full shot of a young man with a beard, seated on the floor with legs bent, wearing an unbuttoned short-sleeve shirt and ripped baggy jeans, looking directly at the camera with a confident expression. The pose is relaxed and casual. Soft, even studio lighting. High contrast, film grain."},
+  {title:"Young Man With His Luxurious Car",category:"anime",image:"images/28.jpg",prompt:"A hyper-realistic portrait of a young man sitting in the passenger seat of a red vintage car, wearing an oversized blazer layered over a plain white t-shirt. His natural hairstyle is gently moving with the breeze as the car drives through New York City at night. The portrait is captured in the vibrant, cinematic style of David LaChapelle, with subtle motion blur and the rich texture of high-speed film. The image must preserve the exact face and physical features of the uploaded reference photo, ensuring a 101% realistic likeness. No feminine accessories such as earrings or necklaces should present the styling, chest, and details should remain masculine and appropriate for a man."},
+  {title:"90s Style",category:"wallpapers",image:"images/29.jpg",prompt:"Create a vintage 1970s Bollywood-inspired photograph of a stylish man sitting casually on the hood of a classic car. He is dressed in a cream pinstriped blazer, cream bell-bottom trousers, and a dark brown shirt with the top buttons open, paired with brown formal shoes, giving a confident mafia-style look. The car has wide whitewall tires, chrome details, and a polished metallic body, reflecting sunlight. In the background, tall green trees and hedges frame the scene. The photograph has the warm, grainy tones of a 1970s film camera, giving it a retro cinematic vibe."},
+  {title:"Blooming Flowers",category:"wallpapers",image:"images/30.jpg",prompt:"Hyper-realistic overhead 9:16 close-up of myself with glasses, playfully leaning against an ivy-covered stone wall of an old countryside cottage during golden hour. I'm smiling with my head slightly tilted back, one hand brushing away a dangling vine, wearing a textured earth-tone knit sweater layered over a soft white t-shirt. The flowering vines are in full bloom with orange, magenta, and lavender hues, softly blurred in the foreground."},
+  {title:"Unique Style",category:"formal",image:"images/31.jpg",prompt:"Surreal cinematic tilted Dutch-angle over-the-shoulder shot of the young man, his ripped linen suit flaring in the wind, staring down at the fragile flower glowing in his hand. Behind him, the tsunami wave crashes violently into the collapsing bridge, cars and debris scattering midair. The tilted frame intensifies the chaos, with streaks of motion blur, glowing fragments, and lens flares across the image. Dreamlike heavy film grain, soft bloom, chromatic aberration."},
+  {title:"Cinematic",category:"wallpapers",image:"images/32.jpg",prompt:"A DRAMATIC 8K ULTRA REALISTIC IMAGE OF A YOUNG SOUTH ASIAN MAN STANDING CONFIDENTLY IN THE CENTER OF A CROWD, HE HAS A SHARP JAWLINE, VOLUMINOUS TEXTURED HAIRSTYLE, AND IS WEARING BLACK SUNGLASSES AND A RICH RED BUTTON-UP SHIRT. HE IS MAKING A ,SHHH GESTURE WITH HIS RIGHT INDEX FINGER ON HIS LIPS, STARING DIRECTLY AT THE CAMERA WITH AN INTENSE EXPRESSION, THE CROWD AROUND HIM, DRESSED IN BLACK SHIRTS WITH WHITE PIPING, HAS THEIR BACKS TURNED OR HEADS SLIGHTLY BOWED, CREATING A CONTRASTING BACKGROUND. THE LIGHTING IS CINEMATIC WITH SHALLOW DEPTH OF FIELD TO HIGHLIGHT THE CENTRAL FIGURE CLEARLY."},
+  {title:"A Man With His Horse",category:"wallpapers",image:"images/33.jpg",prompt:`HYPER-REALISTIC CINEMATIC FULL-BODY PORTRAIT OF THE UPLOADED YOUNG MAN, 100% FACE RESERVED, EXACTLY THE SAME AS IN THE ORIGINAL PHOTO WITH NO AI ALTERATIONS, WITH DARK HAIR, HE WEARS A DEEP OLIVE GREEN LINEN SHIRT WITH SEVERAL BUTTONS UNDONE, REVEALING HIS REAL CHEST TATTOO, PAIRED WITH LIGHT-COLORED LINEN PANTS. HE IS BAREFOOT, WALKING CONFIDENTLY ON GOLDEN SAND DUNES WHILE HOLDING THE LEAD OF A MAJESTIC WHITE HORSE AT HIS SIDE.FABRIC PANELS ARE BILLLOWING DRAMATICALLY BEHIND THEM IN THE WIND, FRAMING THE SUBJECT AND HORSE. CAMERA ANGLE IS SLIGHTLY LOW, CAPTURING A POWERFUL, FORWARD-MOVING STANCE WITH BOTH MAN AND HORSE CENTERED IN THE FRAME. THE SCENE IS LIT BY THE WARM GOLDEN GLOW OF EARLY MORNING/LATE AFTERNOON SUNLIGHT, CREATING A DRAMATIC AND CINEMATIC MOOD.ULTRA-DETAILED SKIN TEXTURES, REALISTIC HAIR, FABRIC, AND TATTOO DETAILS, 8K ULTRA REALISM, RICH CINEMATIC COLOR GRADING.`},
+  {title:"Beautiful Scenery",category:"formal",image:"images/34.jpg",prompt:"A DRAMATIC 8K ULTRA REALISTIC IMAGE OF A YOUNG SOUTH ASIAN MAN STANDING CONFIDENTLY IN THE CENTER OF A CROWD, HE HAS A SHARP JAWLINE, VOLUMINOUS TEXTURED HAIRSTYLE, AND IS WEARING BLACK SUNGLASSES AND A RICH RED BUTTON-UP SHIRT. HE IS MAKING A SHHH GESTURE WITH HIS RIGHT INDEX FINGER ON HIS LIPS, STARING DIRECTLY AT THE CAMERA WITH AN INTENSE EXPRESSION, THE CROWD AROUND HIM, DRESSED IN BLACK SHIRTS WITH WHITE PIPING, HAS THEIR BACKS TURNED OR HEADS SLIGHTLY BOWED, CREATING A CONTRASTING BACKGROUND. THE LIGHTING IS CINEMATIC WITH SHALLOW DEPTH OF FIELD TO HIGHLIGHT THE CENTRAL FIGURE CLEARLY."},
+  {title:"Bossy Look",category:"wallpapers",image:"images/35.jpg",prompt:"Create an ultra-HD, hyper-realistic 9:16 overhead close-up of a human subject using the exact face from the provided selfie - 100% accurate, with no editing, no retouching, no smoothing. Preserve natural skin texture, sharp features, and maintain highest clarity with sharp focus. The subject is calmly leaning against an ivy-covered stone wall of an old countryside cottage during golden hour, checking the time on his watch with his head slightly tilted down, one hand brushing away a dangling vine. The flowering vines are in full bloom with orange, magenta, and lavender hues, softly blurred in the foreground. The outfit must remain exactly the same as in the uploaded reference image."},
+  {title:"A Man Waiting For His Girlfriend",category:"formal",image:"images/36.jpg",prompt:"Create an ultra-HD, cinematic, hyper-realistic full-body portrait of a human subject using the exact face from the provided selfie with no editing, retouching, or smoothing, preserving natural skin texture, sharp features, and the highest clarity with sharp focus. The subject wears the exact same outfit as in the uploaded reference image and is seated on a vintage park bench under a warm streetlight during golden hour, focused on their smartphone, with a bouquet of fresh flowers placed beside them. The scene is surrounded by lush blooms and a cherry tree, set against dramatic golden clouds with a subtle cable line overhead, while a creamy bokeh foreground adds depth. Captured in 8K RAW with shallow depth of field, the image emphasizes vivid textures, warm highlights, teal shadows, and a cinematic mood with lifelike realism and natural color grading."},
+  {title:"Anime Mountain Climb",category:"anime",image:"images/37.jpg",prompt:"Convert this image into a aesthetic 0.6 lens portrait of a boy standing leaning against a wall under a dramatic spotlight in a construction building, with the same face as uploaded image. The boy wears a blue danim jaket with black jeans and wears a classy sunglasses. His hands are in his jeans pockets, and the light is nightmare. The final output must look hyper realistic with sharp details"},
+  {title:"Abstract Neon Shapes",category:"wallpapers",image:"images/38.jpg",prompt:" A retro-urban styled poster featuring a young refference with image artist in multiple poses. He wears a brown casual shirt and cinematic black and white background embroidered on the back., multiple silver rings and luxurious watch emphasize his flashy, The design is layered with close-up portraits, warm brown tones, bold typography reading 'bhai', and a modern magazine-style collage aesthetic, representing Afrobeat and street culture."},
+  {title:"Moving Metro",category:"formal",image:"images/39.jpg",prompt:"Create a warm, retro yet timeless image of a girl (same as the image shared) standing in front of a moving metro train looking in front and smiling giggling with a strappy top,baggy jeans, and tote bag with wired earphones in an underground platform during golden hour. The atmosphere should feel cozy, airy, and full of love, the windy season is softly moving her clothes and her wavy hair, giving the picture a natural, candid beauty. She is smiling with genuine joy, radiating affection and togetherness. The lighting is soft golden,evoking a dreamy sunset glow that highlights warmth and intimacy. The overall tone should be aesthetic, Pinterest-like, slightly vintage with grainy texture, yet bright and vibrant. The mood is serene, heartwarming, and filled with tenderness, capturing a moment of connection and happiness."},
+  {title:"Aesthetic Look",category:"traditional",image:"images/40.jpg",prompt:"Create a retro vintage grainy but bright image of the reference picture but draped in a perfect plain chiffon saree of white colour Pinteresty aesthetic retro saree. It must feel like a 90s movie dark Brown straight hair with a small flower tucked Visibly into her hair and romanticising windy environment the girl is standing against a solid wall deep shadows and contrast drama, creating a mysterious and artistic atmosphere where the lighting is warm with golden tones evoking a sunset or golden hour glow. Thebackground is Minimalist and slightly textured the expression on her face is moody, calm yet happy and introspective make her look into the camera and not elsewhere she is holding a small white ethnic purse"},
+  {title:"Rain Scene",category:"wallpapers",image:"images/41.jpg",prompt:"Transform my photo into a cinematic night rain scene while keeping my face, body, and outfit exactly the same. Add naturally realistic falling rain with proper depth, motion blur, and soft highlights so it looks real, not edited. Place tiny natural water droplets on my skin and clothes to make them appear wet. Keep warm golden streetlight bokeh in the blurred background with reflections on a wet street. The atmosphere should be moody, dark, and cinematic with teal and orange color grading. Ensure lighting falls naturally on me, highlighting my features, without altering my face or body shape."},
+  {title:"Bengali Style",category:"traditional",image:"images/42.jpg",prompt:"Produce a retro vintage-style image of a man dressed in a classic Bengali-style attire with a red border, paired with matching accessories. Background should have a Durga Maa idol in a pandal with a grainy texture and dramatic contrasts."},
+  {title:"Guy Wearing One Piece Skull",category:"anime",image:"images/43.jpg",prompt:"Transform the reference photo into a stylish portrait of the person sitting back in a chair in a relaxed pose, with a cool and indifferent expression. One hand rests on the side of the head, while the other hand rests on the armrest of the chair. The person is dressed in a black vintage jersey with a large one-piece skull and zoro logo motif, paired with oversized dull black baggy jeans."},
+  {title:"Futuristic 3D Wallpaper",category:"wallpapers",image:"images/44.jpg",prompt:"Use reference image to create Ultra Realistic ultra Resolution cinematic 8k detail A young men with your face, wearing a silk Dark red shirt, He left hand holding glowing text that reads 'bhai_555 in jayaa fontstylish name in his one hand. The scene is dark, with the glowing text illuminating his face and hands. The style is a realistic photograph with dramatic, low-key lighting."},
+  {title:"A Man Sitting In the Floor",category:"formal",image:"images/45.jpg",prompt:"A hyper-realistic 4K black and white portrait of a young man sitting on the floor in a relaxed pose, leaning slightly back with one arm resting on his knee and the other hand placed forward. He is wearing a black open shirt with chest slightly visible, paired with ripped loose-fit jeans and sneakers. His expression is calm and confident, with trimmed beard and styled hair. Studio lighting, plain background, cinematic high-fashion editorial look, ultra-detailed, 4K resolution, realistic textures, depth and shadows."},
+  {title:"Bossy Look",category:"wallpapers",image:"images/46.jpg",prompt:"Ultra-realistic lifestyle portrait of a man, short straight black hair, confident and serious expression. Wearing a light beige linen suit with a neutral shirt inside, stylish dark sunglasses. Hands casually in pockets, standing in a modern urban setting with mirrored glass buildings and palm trees in the background. Bright natural daylight,strong defined shadows, elegant atmosphere. Captured with DSLR, 50mm f/2.0 lens, medium shot (waist-up), slightly low angle for presence. Realistic skin texture, natural warm tones, fabric details emphasized. Editorial fashion campaign style. image ratio 4:5 use the 100% same face."},
+  {title:"Natural Look",category:"traditional",image:"images/47.jpg",prompt:"CREATE A SOFT, SUNLIGHT PORTRAIT OF MY FACE WEARING A FLOWING SHEER LIGHT GREEN SAREE WITH DELICATE FLORAL EMBROIDER. SHE SITS GRACEFULLY AGAINST A CROSS AND DOVE DESIGNED WALL, BATHED IN WARM NATURAL LIGHT WITH A TRIANGULAR PATCH OF SUNLIGHT CASTING ARTISTIC SHADOWS. SHE HOLDS THE HOLY BIBLE IN HER HANDS.HER GENTLE EXPRESSION AND THE DREAMY GOLDEN GLOW CREATE A SERENE, POETIC, AND ROMANTIC, LOOKS LIKE CHRISTIAN GIRL. AND RESULT SHOULD BE IN 8K. DO NOT ALTER HER FACE, FEATURES, OR EXPRESSION-KEEP HER NATURAL LOOK WITH NO ADDITIONAL MAKEUP."},
+  {title:"simple Pose",category:"formal",image:"images/48.jpg",prompt:"GUNAKAN FOTO INI SECARA DETAIL (SELFIE JELAS) UNTUK MEMBUAT FULL-BODY STUDIO SHOT. SUBJEK DUDUK DI ATAS BANGKU KUBIK HIJAU MUDA DENGAN LATAR BELAKANG POLOS HIJAU SEDIKIT LEBIH GELAP. ΡΕΝCAHAYAAN LEMBUT DAN ΜERATΑ, ΜΕΝΟΝJOLΚAN TEKSTUR PAKAIAN SERTA PERBEDAAN HALUS ANTARA WARNA HIJAU PADA LATAR DAN BANGKU. IA MENGENAKAN SWEATSHIRT PUTIH CREW-NECK, CELANA CARGO HIJAU ZAITUN MUDA YANG AGAK LONGGAR DAN TERLIPAT DI PERGELANGAN, KAUS KAKI PUTIH, SERTA SNEAKERS HIJAU LIME DENGAN TALI PUTIH. POSE DUDUK DENGAN KEDUA TANGAN TERKATUP SANTAI DI PANGKUAN, MENGHADAP LANGSUNG KE ARAH KAMERA DENGAN EKSPRESI NETRAL. GAYA CASUAL DAN SEDERHANA, FOKUS PADA HARMONI WARNA HIJAU DAN DETAIL TEKSTUR. GUNAKAN WAJAH ASLI DARI FOTO TANPA MENGUBAH WAJAH SEDIKITPUN."},
+  {title:"Diwali",category:"traditional",image:"images/49.jpg",prompt:"A realistic Diwali celebration scene showing a young Indian woman in a red and gold saree lighting diyas outside her home at night. The house is decorated with marigold garlands, fairy lights, and colorful rangoli on the floor. Warm glow from the lamps"},
+  {title:"Indian Women With Elegant Pose",category:"traditional",image:"images/50.jpg",prompt:"Indian woman seated gracefully on a wooden chair, wearing a soft floral-patterned saree in earthy tones, elegant pose with hand resting on chin, warm ambient lighting, textured brown wall background, decorative indoor plant arrangement, cinematic composition, high-resolution fashion editorial style and result should be in 8k realistic."},
+  {title:"Painting",category:"anime",image:"images/51.jpg",prompt:"Transform this image into a vibrant watercolor painting, capturing the essence of the original with fluid brush strokes and a soft, dreamy color palette."},
+  {title:"Sepia-Toned Photography",category:"wallpapers",image:"images/52.jpg",prompt:"Turn this image into a vintage sepia-toned photograph, emphasizing nostalgia with soft edges and faded textures while maintaining key details and do not change face."},
+  {title:"Aesthetic Portrait",category:"anime",image:"images/53.jpg",prompt:"Recreate this scene as a vibrant 80s pop art piece, incorporating bold colors, strong lines, and a playful twist that enhances the original subject."},
+  {title:"Art Style",category:"anime",image:"images/54.jpg",prompt:"Convert this image into a surrealist artwork, adding dream-like elements such as floating objects, unusual color combinations, and whimsical distortions"},
+  {title:"Fairy Tale",category:"wallpapers",image:"images/55.jpg",prompt:"Transform this image into a cinematic still from a fantasy film, focusing on dramatic lighting, atmospheric depth, and an epic composition that tells a story."},
+  {title:"Astro",category:"anime",image:"images/56.jpg",prompt:"A majestic 4K HD portrait of the same person, their skin is a translucent veil over a swirling galaxy and star chart constellations, with glowing lines connecting celestial bodies. They are dressed in elegant, dark scholar's robes. A faint nebula halo crowns their head. It is crucial to keep the face completely unchanged and recognizable. Ethereal lighting, hyper-realistic, trending on ArtStation"},
+  {title:"Special Effects",category:"anime",image:"images/57.jpg",prompt:"The same person materializing as a glitching data ghost in a rain-soaked neo-noir alley. Their body is composed of semi-transparent, holographic energy with cascading digital code and flickering light. They are wearing a sleek, futuristic trench coat. The core face must remain crystal clear and un-glitched amidst the digital chaos. 4K HD, cinematic, Blade Runner aesthetic, vibrant neon reflections."},
+  {title:"Greate Hall Of Library",category:"wallpapers",image:"images/58.jpg",prompt:"A hyper-realistic 4K HD photo of the same person, standing in the majestic, sun-drenched Great Hall of the Library of Alexandria. They are looking in awe at towering shelves of ancient papyrus scrolls and marble statues. Dust motes float in sunbeams pouring from high windows. Keep the person's face completely unchanged and photorealistic. Cinematic lighting, shot on a Arri Alexa camera, wide-angle lens, photorealistic."},
+  {title:"Guy Leaning On His Bike ",category:"formal",image:"images/59.jpg",prompt:"Ultra-realistic, cinematic 8K full-body portrait of the same young man (using the uploaded face reference exactly, 100% unchanged), leaning stylishly against a shiny black custom modified Continental GT 650 motorcycle. The bike has dual silencer style exhausts, chrome detailing wide tires, and a clearly visible rear number plate. The man wears an grey shirt and black pants: open-collar shirt, slim trousers, polished shoes, and a thin gold chain on his chest."},
+  {title:"Tokyo_Night",category:"anime",image:"images/60.jpg",prompt:"A dynamic, hyper-realistic 4K HD photo of the same person looking amazed and excited, standing amidst the bustling crowds of Shibuya Crossing in Tokyo, Japan, at night. The scene is illuminated by countless neon lights and advertisements, creating a vibrant and energetic atmosphere."},
+  {title:"Mount Fuji Background",category:"wallpapers",image:"images/61.jpg",prompt:"A serene, hyper-realistic 4K HD portrait of the same person, bundled in warm winter clothing, holding a steaming cup and looking out at the majestic Mount Fuji across Lake Kawaguchiko, Japan. The lake is calm, reflecting the snow-capped peak. Soft, early morning light, telephoto lens, professional landscape photography, do not change face."},
+  {title:"Girl Wearing Kimono",category:"traditional",image:"images/62.jpg",prompt:"A hyper-realistic 4K HD photo of the same person smiling joyfully while wearing a vibrant kimono, walking amidst blooming cherry blossom trees at Kiyomizu-dera Temple in Kyoto, Japan. Traditional Japanese architecture is visible in the background. Soft, natural daylight, professional travel photography, sharp focus, vibrant colors, do not change face."},
+  {title:"Guy Wearing Kimono",category:"traditional",image:"images/63.jpg",prompt:"Me wearing a traditional Japanese kimono, walking through Kyoto’s red maple garden in autumn, misty air and falling leaves, ultra-realistic 8K, cinematic lighting, face unchanged"},
+  {title:"Egyptian Desert",category:"wallpapers",image:"images/70.jpg",prompt:"Shanker dressed in Egyptian desert robes, standing near the Pyramids of Giza at golden hour, warm desert tones and ancient ambiance, ultra-realistic 8K, cultural accuracy, face preserved"},
+  {title:"Eiffel Tower",category:"formal",image:"images/64.jpg",prompt:"Me in a classic Parisian spring outfit with a beret and trench coat, standing near the Eiffel Tower with cherry blossoms blooming, soft cinematic lighting, ultra-detailed 8K, face untouched"},
+  {title:"Man Standing in Snow",category:"wallpapers",image:"images/65.jpg",prompt:"Me standing in a heavy snowstorm, wrapped in a thick winter coat, snowflakes swirling around, breath visible in the cold air, cinematic lighting, ultra-realistic 8K"},
+  {title:"A Man With His Umbrella",category:"wallpapers",image:"images/66.jpg",prompt:"Me walking down a dimly lit street in pouring rain, reflections on wet pavement, holding an umbrella, moody atmosphere, cinematic realism in 8K"},
+  {title:"A Girl in the Snow",category:"wallpapers",image:"images/67.jpg",prompt:"Me standing confidently in a heavy alpine snowstorm, wearing a thick fur-lined winter coat and gloves, snowflakes swirling around his face, breath visible in the icy air, cinematic lighting highlighting facial features, ultra-realistic 8K with full facial clarity and climate-accurate atmosphere"},
+  {title:"A Stylish Man with a Maserati",category:"wallpapers",image:"images/68.jpg",prompt:"A hyper-realistic, ultra-sharp cinematic portrait of a stylish man leaning casually against a sleek black Maserati MC20 supercar. The man stands in a relaxed pose with one leg slightly bent, resting his back against the glossy car door. use the 100% same face as i uploaded."},
+  {title:"Black & White",category:"formal",image:"images/69.jpg",prompt:"EDIT FOTO INI TANPA MERUBAH MUKA MENJADI GAMBAR HITAM-PUTIH INI MENAMPILKAN SEORANG PRIA BERKACAMATA DENGAN RAMBUT HITAM. IA BERDIRI DENGAN LATAR BELAKANG BERGARIS-GARIS DIAGONAL YANG MENCIPTAKAN POLA BAYANGAN SEPERTI ZEBRA, MENAMBAH KESAN DRAMATIS PADA FOTO. PRIA MENGENAKAN SETELAN JAS HITAM DENGAN DETAIL KERUTAN HALUS PADA SISI CELANANYA. CAHAYA UTAMA DATANG DARI SISI KANAN PRIA, MENYOROT WAJAHNYA DAN MEMPERTEGAS BAYANGAN DI SISI KIRI TUBUHNYA. ΡΕΝCAHAΑΥΑΑΝ ΙΝΙ ΜΕNΟΝJOLKAΝ FITUR WAJAΗΝΥΑ, SEPERTI TULANG PIPI YANG TEGAS, BIBIR YANG DIPOLES GELAP, DAN TATAPAN MATA YANG INTENS, MENCIPTAKAN KESAN MISTERIUS DAN BERANI. TANGAN KANANNYA BERADA DI BELAKANG PUNGGUNG, SEMENTARA TANGAN KIRINYA SEDIKIT TERSEMBUNYI. SILUET BAYANGAN DI SISI KIRI TUBUHNYA JATUH KE DINDING DI SAMPINGNYA, MENAMBAH DIMENSI DAN KEDALAMAN PADA POTRET INI."}
+  ];
+ // -------------------- CREATE CARDS --------------------
+const grid = document.getElementById('promptGrid');
+prompts.forEach(p => grid.appendChild(createCard(p)));
+
+function createCard(p) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.category = p.category;
+  card.dataset.title = p.title;
+
+  card.innerHTML = `
+    <img src="${p.image}" alt="${p.title}">
+    <div class="tags">${p.category}</div>
+    <h3>${p.title}</h3>
+    <p>${p.prompt}</p>
+    <button class="more-btn">Show More</button>
+    <button class="copy-btn" data-text="${p.prompt}">Copy Prompt</button>
+  `;
+  return card;
+}
+
+// -------------------- COPY PROMPT & EXPAND --------------------
+document.body.addEventListener('click', e => {
+  if (e.target.classList.contains('copy-btn')) {
+    const text = e.target.getAttribute('data-text');
+    navigator.clipboard.writeText(text).then(() => {
+      e.target.innerText = "Copied!";
+      setTimeout(() => e.target.innerText = "Copy Prompt", 1500);
+    });
+  }
+
+  if (e.target.classList.contains('more-btn')) {
+    const p = e.target.previousElementSibling;
+    if (p.classList.contains('expanded')) {
+      p.classList.remove('expanded');
+      e.target.innerText = "Show More";
+    } else {
+      p.classList.add('expanded');
+      e.target.innerText = "Show Less";
+    }
+  }
+});
+
+// -------------------- SEARCH + FILTER --------------------
+const searchInput = document.getElementById('searchInput');
+const categoryFilter = document.getElementById('categoryFilter');
+
+function filterPrompts() {
+  const search = searchInput.value.toLowerCase();
+  const category = categoryFilter.value;
+  document.querySelectorAll('.card').forEach(card => {
+    const inTitle = card.dataset.title.toLowerCase().includes(search);
+    const inCategory = !category || card.dataset.category === category;
+    card.style.display = (inTitle && inCategory) ? 'flex' : 'none';
+  });
+}
+searchInput.addEventListener('input', filterPrompts);
+categoryFilter.addEventListener('change', filterPrompts);
+
+// -------------------- BACK TO TOP --------------------
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
+});
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// -------------------- SIGN IN MODAL --------------------
+  const modal = document.getElementById('signInModal');
+  const openBtn = document.getElementById('openSignIn');
+  const closeBtn = document.getElementById('closeSignIn');
+
+  openBtn.addEventListener('click', () => modal.style.display = 'flex');
+  closeBtn.addEventListener('click', () => modal.style.display = 'none');
+  window.addEventListener('click', e => {
+    if (e.target === modal) modal.style.display = 'none';
+  });
+</script>
+</body>
+</html>
