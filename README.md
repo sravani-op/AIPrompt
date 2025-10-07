@@ -27,7 +27,7 @@ Built With
 ---
 
  🔗 Live Demo  
-👉 Check it out here: [AI Prompt Website](https://sravani-op.github.io/AI-PROMPT/)  
+👉 Check it out here: [https://sravani-op.github.io/AIPrompt/)  
 
 ---
 
